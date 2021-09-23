@@ -52,7 +52,7 @@ def main():
 			} for row in csv.DictReader(f) if row['price'] != "0.0" and row['profit'] != "0.0"
 		]
 
-	dataset = dataset[:25]
+	dataset = dataset[:20]
 
 	print(json.dumps(best_investment(dataset), indent=2))
 
