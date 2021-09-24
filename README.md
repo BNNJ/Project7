@@ -14,3 +14,7 @@ $ ./optimized.py [-h] [--greedy] input
 | -m --max X | Use X as the maximum cost (default=500) |
 | --greedy   | Use a greedy algorithm instead of branch and bound |
 | input      | The dataset to use in .csv format |
+
+```bash
+$ ./bruteforce input
+```
