@@ -25,6 +25,7 @@ class Node:
 	def __ne__(self, other):
 		return not self.__eq__(other)
 
+# O(n)	n = len(ITEMS)
 def bound(available):
 	lower_bound, upper_bound, cost = 0, 0, 0
 	for i, item in enumerate(ITEMS):
@@ -39,6 +40,7 @@ def bound(available):
 	upper_bound = max(lower_bound, upper_bound)
 	return lower_bound, upper_bound
 
+# O(n * 2)	n = len(ITEMS)	because Node constructor calls bound()
 def explore(parent):
 	index = parent.item_index + 1
 	item = ITEMS[index]
@@ -49,8 +51,10 @@ def explore(parent):
 		Node(item, index, exc, parent.cost)
 	)
 
+# O()
 def bnb(dataset, max_cost):
-	cost, profit, items = 0, 0, []
+
+	# O(n logn)		n = len(dataset)
 	dataset = sorted(dataset, key=attrgetter('rate'), reverse=True)
 	global MAX_COST, ITEMS
 	MAX_COST, ITEMS = max_cost, dataset
@@ -62,12 +66,14 @@ def bnb(dataset, max_cost):
 
 	root = Node(None, -1, available, 0)
 	current_node = root
+
+	# O(?)
 	while current_node.item != dataset[-1]:
-		inc, exc = explore(current_node)
+		inc, exc = explore(current_node)		# O(2n)		n = len(dataset)
 		if inc.cost <= MAX_COST:
-			pending.put(inc)
-		pending.put(exc)	
-		current_node = pending.get()
+			pending.put(inc)					# O(logn)	n = len(pending)
+		pending.put(exc)						# O(logn)	n = len(pending)
+		current_node = pending.get()			# O(logn)	n = len(pending)
 
 	selected = current_node.available
 	result = {
@@ -79,10 +85,9 @@ def bnb(dataset, max_cost):
 
 def main():
 	pass
-	# while not q.empty()
 
 if __name__ == "__main__":
 	global ITEMS
 	ITEMS = [1, 2, 3, 4, 5]
 	sel = 0b10011
-	print(get_items(sel))
+	main()
