@@ -5,7 +5,7 @@ Computes the best investments you can make !
 ## usage
 
 ```bash
-$ ./optimized.py [-h] [--greedy] input
+$ ./optimized.py [-h] [-m X | --max X][--greedy] input
 ```
 
 ```bash
