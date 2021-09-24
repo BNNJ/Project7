@@ -5,9 +5,9 @@ import json
 
 from greedy	 import greedy
 from bnb import bnb
+from timeit import default_timer as timer
 
 from csv import DictReader
-from operator import attrgetter
 
 class Share:
 	def __init__(self, name, cost, rate):
@@ -62,12 +62,18 @@ def main():
 	max_cost = args.max
 	dataset = read_dataset(file_name)
 
+	start = timer()
 	if args.greedy:
+		print(f"Using greedy Algorithm...")
 		result = greedy(dataset, max_cost)
 	else:
+		print(f"Using branch and bound Algorithm...")
 		result = bnb(dataset, max_cost)
 
 	print(json.dumps(result, indent=2))
+	end = timer()
+
+	print(f"computed in {end - start} seconds")
 
 if __name__ == "__main__":
 	main()
