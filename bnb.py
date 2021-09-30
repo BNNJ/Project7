@@ -77,8 +77,8 @@ def bnb(dataset, max_cost):
 
 	selected = current_node.available
 	result = {
-		'cost': round(sum([item.cost for i, item in enumerate(dataset) if selected & 1 << i]), 4),
-		'profit': round(sum([item.profit for i, item in enumerate(dataset) if selected & 1 << i]), 4),
+		'cost': sum([item.cost for i, item in enumerate(dataset) if selected & 1 << i]),
+		'profit': sum([item.profit for i, item in enumerate(dataset) if selected & 1 << i]),
 		'items': [item.name for i, item in enumerate(dataset) if selected & 1 << i],
 	}
 	return result

@@ -44,9 +44,15 @@ def parse_args():
 	)
 
 	argp.add_argument(
-		"--greedy",
+		"-g", "--greedy",
 		action="store_true",
-		help="Algorithm to use."
+		help="Greedy mode, useful to get lower and upper bounds"
+	)
+
+	argp.add_argument(
+		"-a", "--accurate",
+		action="store_true",
+		help="Disable rounding floats to 2 decimals"
 	)
 
 	argp.add_argument(
@@ -55,6 +61,15 @@ def parse_args():
 	)
 
 	return argp.parse_args()
+
+def round_floats(data):
+	if isinstance(data, float):
+		return round(data, 2)
+	if isinstance(data, dict):
+		for k, v in data.items():
+			data[k] = round_floats(v)
+	return data
+
 
 def main():
 	args = parse_args()
@@ -69,6 +84,9 @@ def main():
 	else:
 		print(f"Using branch and bound Algorithm...")
 		result = bnb(dataset, max_cost)
+
+	if not args.accurate:
+		round_floats(result)
 
 	print(json.dumps(result, indent=2))
 
