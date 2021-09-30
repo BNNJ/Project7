@@ -5,6 +5,7 @@ import csv
 import json
 
 from more_itertools import powerset
+from timeit import default_timer as timer
 
 def parse_args():
 	argp = argparse.ArgumentParser(description="Stock invester (bruteforce version)")
@@ -40,7 +41,7 @@ def best_investment(dataset):
 
 def main():
 	args = parse_args()
-
+	start_time = timer()
 # O(n) n = number of shares
 	with open(args.input, 'r') as f:
 		dataset = [
@@ -55,6 +56,8 @@ def main():
 	dataset = dataset[:20]
 
 	print(json.dumps(best_investment(dataset), indent=2))
+	end_time = timer()
+	print(f"computed in {end_time-start_time} seconds")
 
 if __name__ == "__main__":
 	main()

@@ -67,7 +67,7 @@ def bnb(dataset, max_cost):
 	root = Node(None, -1, available, 0)
 	current_node = root
 
-	# O(?)
+	# O(?)	minimum O(n) avec n = len(dataset)
 	while current_node.item != dataset[-1]:
 		inc, exc = explore(current_node)		# O(2n)		n = len(dataset)
 		if inc.cost <= MAX_COST:

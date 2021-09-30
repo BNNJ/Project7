@@ -38,7 +38,7 @@ def parse_args():
 
 	argp.add_argument(
 		"-m", "--max",
-		nargs=1,
+		type=int,
 		default=500,
 		help="The maximum cost"
 	)
@@ -71,9 +71,9 @@ def main():
 		result = bnb(dataset, max_cost)
 
 	print(json.dumps(result, indent=2))
-	end = timer()
 
-	print(f"computed in {end - start} seconds")
+	end = timer()
+	print(f"computed in {end-start} seconds")
 
 if __name__ == "__main__":
 	main()
