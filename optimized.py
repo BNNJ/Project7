@@ -3,7 +3,7 @@
 import argparse
 import json
 
-from greedy	 import greedy
+from greedy import greedy
 from bnb import bnb
 from timeit import default_timer as timer
 
@@ -85,12 +85,12 @@ def main():
 		print(f"Using branch and bound Algorithm...")
 		result = bnb(dataset, max_cost)
 
+	end = timer()
+
 	if not args.accurate:
 		round_floats(result)
 
 	print(json.dumps(result, indent=2))
-
-	end = timer()
 	print(f"computed in {end-start} seconds")
 
 if __name__ == "__main__":
