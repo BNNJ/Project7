@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 
+"""
+0-1 knapsack solver using a bruteforce algorithm.
+
+usage: ./bruteforce.py [-h] input
+
+Input should be a csv file starting with "name, price, profit",
+with each following line describing a market share:
+	name:	the name of the share
+	price:	the buying price of the share
+	profit:	the expected gain after 2 years. Not that this is NOT the
+			total value of the item, as would usually be given in a standard
+			knapsack problem. The value can be obtained by profit / 100 *  price
+"""
+
+
 import argparse
 import csv
 import json
@@ -17,7 +32,27 @@ def parse_args():
 	return argp.parse_args()
 
 def best_investment(dataset):
-# O(n) n = len(items)
+	"""
+	Return the most profitable subset of shares from the input.
+
+	time complexity: O(2^n) with n = len(dataset)
+	parameter:
+		dataset: [
+			{
+				name: string
+				cost: float
+				rate: float
+				profit: float
+			}
+		]
+	return:
+		{
+			profit: the total profit of the selected shares
+			cost: the total cost of the selected shares
+			items: the names of the selected shares
+		}
+	"""
+
 	def double_sum(items):
 		profit, cost = 0, 0
 		for item in items:
@@ -25,7 +60,6 @@ def best_investment(dataset):
 			cost += item['cost']
 		return (profit, cost)
 
-# powerset: O(2^n) n = len(dataset)
 	max_profit = 0 
 	for items in powerset(dataset):
 		profit, cost = double_sum(items)

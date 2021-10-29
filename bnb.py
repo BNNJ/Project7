@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from queue import PriorityQueue
 from operator import attrgetter
 
@@ -9,7 +7,7 @@ class Node:
 		self.item_index = item_index
 		self.available = available
 		self.cost = cost
-		self.lower_bound, self.upper_bound = bound(available)
+		self.lower_bound, self.upper_bound = _bound(available)
 		self._items = None
 
 	def __lt__(self, other):
@@ -25,8 +23,8 @@ class Node:
 	def __ne__(self, other):
 		return not self.__eq__(other)
 
-# O(n)	n = len(ITEMS)
-def bound(available):
+def _bound(available):
+	"""Return the lower and higher bounds of a branch"""
 	lower_bound, upper_bound, cost = 0, 0, 0
 	for i, item in enumerate(ITEMS):
 		if available >> i & 1 == 0:
@@ -41,7 +39,7 @@ def bound(available):
 	return lower_bound, upper_bound
 
 # O(n * 2)	n = len(ITEMS)	because Node constructor calls bound()
-def explore(parent):
+def _explore(parent):
 	index = parent.item_index + 1
 	item = ITEMS[index]
 	inc = parent.available
@@ -51,10 +49,22 @@ def explore(parent):
 		Node(item, index, exc, parent.cost)
 	)
 
-# O()
 def bnb(dataset, max_cost):
+	"""
+	Branch and bound algorithm to solve the 0-1 knapsack.
 
-	# O(n logn)		n = len(dataset)
+	time complexity: O(n logn)
+	space complexity: O(n logn)
+	parameters:
+		dataset: a list of Share instances
+		max_cost: the maximum cost constraint
+	return:
+		{
+			cost: the total cost of the selected shares
+			profit: the total profit of the selected shares
+			items: the names of the selected shares
+		}
+	"""
 	dataset = sorted(dataset, key=attrgetter('rate'), reverse=True)
 	global MAX_COST, ITEMS
 	MAX_COST, ITEMS = max_cost, dataset
@@ -67,9 +77,8 @@ def bnb(dataset, max_cost):
 	root = Node(None, -1, available, 0)
 	current_node = root
 
-	# O(?)	minimum O(n) avec n = len(dataset)
 	while current_node.item != dataset[-1]:
-		inc, exc = explore(current_node)		# O(2n)		n = len(dataset)
+		inc, exc = _explore(current_node)		# O(2n)		n = len(dataset)
 		if inc.cost <= MAX_COST:
 			pending.put(inc)					# O(logn)	n = len(pending)
 		pending.put(exc)						# O(logn)	n = len(pending)
@@ -82,12 +91,3 @@ def bnb(dataset, max_cost):
 		'items': [item.name for i, item in enumerate(dataset) if selected & 1 << i],
 	}
 	return result
-
-def main():
-	pass
-
-if __name__ == "__main__":
-	global ITEMS
-	ITEMS = [1, 2, 3, 4, 5]
-	sel = 0b10011
-	main()

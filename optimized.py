@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
 
+"""
+0-1 knapsack solver using either a branch and bound (default) or greedy algorithm.
+
+usage: ./optimized.py [-h] [-m MAX] [-g] [-a] input
+	-h		help
+	-m MAX	the maximum cost constraint
+	-g		use the greedy algorithm
+	-a		don't round results to 2 decimals
+	input	input file
+
+Input should be a csv file starting with "name, price, profit",
+with each following line describing a market share:
+	name:	the name of the share
+	price:	the buying price of the share
+	profit:	the expected gain after 2 years. Not that this is NOT the
+			total value of the item, as would usually be given in a standard
+			knapsack problem. The value can be obtained by profit / 100 *  price
+"""
+
 import argparse
 import json
 
@@ -20,6 +39,7 @@ class Share:
 		return f"{self.name}: cost = {self.cost}, rate = {self.rate}, profit = {self.profit}"
 
 def read_dataset(file_name):
+	"""Read a csv file and return a list of Share instances."""
 	dataset = []
 	with open(file_name, 'r') as f:
 		for row in DictReader(f):
@@ -33,7 +53,7 @@ def read_dataset(file_name):
 				))
 	return dataset
 
-def parse_args():
+def _parse_args():
 	argp = argparse.ArgumentParser(description="Stock invester (optimized version)")
 
 	argp.add_argument(
@@ -63,6 +83,7 @@ def parse_args():
 	return argp.parse_args()
 
 def round_floats(data):
+	"""Return a rounded-float version of the input data"""
 	if isinstance(data, float):
 		return round(data, 2)
 	if isinstance(data, dict):
@@ -70,9 +91,8 @@ def round_floats(data):
 			data[k] = round_floats(v)
 	return data
 
-
-def main():
-	args = parse_args()
+def _main():
+	args = _parse_args()
 	file_name = args.input
 	max_cost = args.max
 	dataset = read_dataset(file_name)
@@ -94,4 +114,4 @@ def main():
 	print(f"computed in {end-start} seconds")
 
 if __name__ == "__main__":
-	main()
+	_main()
