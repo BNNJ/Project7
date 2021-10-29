@@ -36,6 +36,7 @@ def best_investment(dataset):
 	Return the most profitable subset of shares from the input.
 
 	time complexity: O(2^n) with n = len(dataset)
+	space complexity: O(n)
 	parameter:
 		dataset: [
 			{
@@ -73,10 +74,9 @@ def best_investment(dataset):
 		'items': [item['name'] for item in best_combo]
 	}
 
-def main():
+def _main():
 	args = parse_args()
 	start_time = timer()
-# O(n) n = number of shares
 	with open(args.input, 'r') as f:
 		dataset = [
 			{
@@ -94,4 +94,4 @@ def main():
 	print(f"computed in {end_time-start_time} seconds")
 
 if __name__ == "__main__":
-	main()
+	_main()
